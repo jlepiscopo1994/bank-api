@@ -11,11 +11,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authz -> authz
+        http
+            .csrf((csrf) -> csrf.disable())
+            .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
-        )
-        .httpBasic(Customizer.withDefaults());
+            )
+            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
