@@ -11,6 +11,7 @@ import com.bank.dto.BankAccountRequestDTO;
 import com.bank.dto.BankAccountResponseDTO;
 import com.bank.service.BankAccountService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,22 +31,26 @@ public class BankAccountController {
     @Autowired
     private BankAccountService bankAccountService;
 
+    @Operation(summary = "Get all bank accounts")
     @GetMapping
     public List<BankAccountResponseDTO> getAccounts() {
         return bankAccountService.getAllBankAccounts();
     }
 
+    @Operation(summary = "Create a new bank account")
     @PostMapping
     public BankAccountResponseDTO createAccount(@Valid @RequestBody BankAccountRequestDTO account) {
         return bankAccountService.createBankAccount(account);
     }
 
+    @Operation(summary = "Deposit money into a bank account")
     @PostMapping("/{id}/deposit")
     public BankAccountResponseDTO deposit(@PathVariable Long id, @Valid @RequestBody AmountDTO amount) {
         System.out.println("Received amount: " + amount.getAmount());
         return bankAccountService.deposit(id, amount.getAmount());
     }
     
+    @Operation(summary = "Withdraw money from a bank account")
     @PostMapping("/{id}/withdraw")
     public BankAccountResponseDTO withdraw(@PathVariable Long id, @Valid @RequestBody AmountDTO amount) {
         System.out.println("Received amount: " + amount.getAmount());
